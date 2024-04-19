@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 
+import '../utilities/calling.dart';
+
 class EmergencyResources extends StatefulWidget {
   final weatherAlert;
   const EmergencyResources({super.key, this.weatherAlert});
-  
+
   @override
   State<EmergencyResources> createState() => _EmergencyResourcesState();
 }
@@ -61,7 +63,7 @@ class _EmergencyResourcesState extends State<EmergencyResources> {
               const SizedBox(
                 height: 10,
               ),
-              _weatherAlert
+              widget.weatherAlert
                   ? Container(
                       width: 380,
                       height: 200,
@@ -148,59 +150,64 @@ class _EmergencyResourcesState extends State<EmergencyResources> {
                 child: ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      return Container(
-                        width: 380,
-                        height: 85,
-                        decoration: BoxDecoration(
-                          color: c5.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(22),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10, left: 20),
-                              child: Container(
-                                width: 190,
-                                alignment: Alignment.centerLeft,
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: double.infinity,
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        _authorityNames[index],
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall
-                                            ?.copyWith(fontSize: 25),
+                      return InkWell(
+                        onTap: () =>
+                            makePhoneCall(_authorityContacts[index], context),
+                        child: Container(
+                          width: 380,
+                          height: 85,
+                          decoration: BoxDecoration(
+                            color: c5.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10, left: 20),
+                                child: Container(
+                                  width: 190,
+                                  alignment: Alignment.centerLeft,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: double.infinity,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          _authorityNames[index],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(fontSize: 25),
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      width: double.infinity,
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        _authorityContacts[index],
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displaySmall
-                                            ?.copyWith(
-                                                fontSize: 20,
-                                                color: Colors.grey.shade600),
+                                      Container(
+                                        width: double.infinity,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          _authorityContacts[index],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(
+                                                  fontSize: 20,
+                                                  color: Colors.grey.shade600),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: Icon(
-                                _authorityIcons[index],
-                                size: 30,
-                              ),
-                            )
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(right: 20),
+                                child: Icon(
+                                  _authorityIcons[index],
+                                  size: 30,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       );
                     },
