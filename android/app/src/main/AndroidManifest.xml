@@ -5,6 +5,8 @@
         android:label="nimbus_cast"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyA8JNDK37FA97YgjIa3L2o1AvKwXZZZ46M"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -3,6 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:nimbus_cast/Pages/accessibility_page.dart';
 import 'package:nimbus_cast/Pages/emergency_resources.dart';
 import 'package:nimbus_cast/Pages/forecast_page.dart';
+import 'package:nimbus_cast/Pages/realtime_page.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -17,7 +18,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   static const List<Widget> _widgetsOptions = <Widget>[
     ForecastPage(),
-    Text("Real Time Data"),
+    RealTime(),
     EmergencyResources(weatherAlert: false),
     AccessibilityPage(),
   ];

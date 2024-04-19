@@ -6,7 +6,6 @@ import 'package:weather/weather.dart';
 
 class ForecastPage extends StatefulWidget {
   const ForecastPage({super.key});
-
   @override
   State<ForecastPage> createState() => _ForecastPageState();
 }
@@ -19,19 +18,23 @@ class _ForecastPageState extends State<ForecastPage> {
   @override
   void initState() {
     super.initState();
-    _wf.currentWeatherByCityName("Dubai").then((w) {
-      setState(() {
-        _weather = w;
-        _cityDetails = [
-          _weather?.humidity,
-          _weather?.pressure,
-          "${_weather?.latitude}° ${_weather?.longitude}° ",
-          _weather?.windSpeed,
-          _weather?.sunrise,
-          _weather?.sunset,
-        ];
-      });
-    });
+    _wf.currentWeatherByCityName("Rajkot").then(
+      (w) {
+        setState(
+          () {
+            _weather = w;
+            _cityDetails = [
+              _weather?.humidity,
+              _weather?.pressure,
+              "${_weather?.latitude}° ${_weather?.longitude}° ",
+              _weather?.windSpeed,
+              "${_weather?.sunrise!.hour.toString().padLeft(2, '0')}:${_weather?.sunrise!.minute.toString().padLeft(2, '0')}",
+              "${_weather?.sunset!.hour.toString().padLeft(2, '0')}:${_weather?.sunset!.minute.toString().padLeft(2, '0')}",
+            ];
+          },
+        );
+      },
+    );
   }
 
   final List _cityDetailsName = [
@@ -150,7 +153,7 @@ class _ForecastPageState extends State<ForecastPage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Container(
                       width: 380,
