@@ -10,7 +10,7 @@ class ForecastTileProvider implements TileProvider {
     Uint8List tileBytes = Uint8List(0);
     try {
       final url =
-          "https://api.tomorrow.io/v4/weather/forecast?location=$x,$y&apikey=nt5N8qRVPwvoLsuUzLmcEG4thPC1y1VC";
+          "https://tile.openweathermap.org/map/precipitation_new/14/24/23.png?appid=b1a44de596dec01e65461c40bcd42f55";
       final uri = Uri.parse(url);
       final response = await http.get(uri);
       print(x);

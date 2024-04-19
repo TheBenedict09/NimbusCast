@@ -1,112 +1,128 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:nimbus_cast/utilities/colors.dart';
 import 'package:nimbus_cast/utilities/consts.dart';
-import 'package:nimbus_cast/utilities/forecast_tile_provider.dart';
 import 'package:weather/weather.dart';
 
-class RealTime extends StatefulWidget {
-  const RealTime({super.key});
+class RealTimePage extends StatefulWidget {
+  const RealTimePage({super.key});
 
   @override
-  State<RealTime> createState() => RealTimeState();
+  State<RealTimePage> createState() => _RealTimePageState();
 }
 
-class RealTimeState extends State<RealTime> {
+class _RealTimePageState extends State<RealTimePage> {
   final WeatherFactory _wf = WeatherFactory(OPENWEATHER_API_KEY);
-
   Weather? _weather;
-  late double lat;
-  late double long;
-  late CameraPosition initialPosition = const CameraPosition(
-      target: LatLng(27.1894, 88.4978), // Default coordinates
-      zoom: 14.4746);
-
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
-
-  Set<TileOverlay> _tileOverlays = {};
-
-  _initTiles() async {
-    final String overLayId = DateTime.now().millisecondsSinceEpoch.toString();
-    final tileOverLay = TileOverlay(
-      tileOverlayId: TileOverlayId(overLayId),
-      tileProvider: ForecastTileProvider(),
-    );
-    setState(
-      () {
-        _tileOverlays = {tileOverLay};
-      },
-    );
-  }
+  List _cityDetails = [];
 
   @override
   void initState() {
     super.initState();
-    _wf.currentWeatherByCityName("majitar").then(
+    _wf.currentWeatherByCityName("Rajkot").then(
       (w) {
         setState(
           () {
             _weather = w;
-            if (_weather != null &&
-                _weather!.latitude != null &&
-                _weather!.longitude != null) {
-              lat = _weather!.latitude!.toDouble();
-              long = _weather!.longitude!.toDouble();
-              initialPosition =
-                  CameraPosition(target: LatLng(lat, long), zoom: 12.5);
-            } else {
-              // Handle the null case or set a default position
-              // initialPosition = const CameraPosition(
-              //     target: LatLng(27.1894, 88.4978), zoom: 14.4746);
-              const CircularProgressIndicator();
-            }
+            _cityDetails = [
+              _weather?.humidity ?? 'N/A',
+              _weather?.pressure ?? 'N/A',
+              _weather?.cloudiness,
+              "${_weather?.latitude ?? 'N/A'}° ${_weather?.longitude ?? 'N/A'}°",
+              _weather?.windSpeed ?? 'N/A',
+              _weather?.weatherDescription,
+              _weather?.sunrise != null
+                  ? "${_weather!.sunrise!.hour.toString().padLeft(2, '0')}:${_weather!.sunrise!.minute.toString().padLeft(2, '0')}"
+                  : 'N/A',
+              _weather?.sunset != null
+                  ? "${_weather!.sunset!.hour.toString().padLeft(2, '0')}:${_weather!.sunset!.minute.toString().padLeft(2, '0')}"
+                  : 'N/A',
+            ];
           },
         );
       },
-    ).catchError(
-      (error) {
-        // Handle errors appropriately
-        print('Error fetching weather data: $error');
-        setState(
-          () {
-            initialPosition = const CameraPosition(
-                target: LatLng(27.1894, 88.4978),
-                zoom: 14.4746); // Fallback position
-          },
-        );
-      },
-    );
+    ).catchError((error) {
+      print('Failed to fetch weather data: $error');
+    });
   }
 
-  @override
-  void setState(VoidCallback fn) {
-    // TODO: implement setState
-    super.setState(fn);
-    InitialPosition(initialPosition);
-  }
+  final List _cityDetailsName = [
+    "Humidity",
+    "Pressure",
+    "Cloudiness",
+    "Location",
+    "Wind Speed",
+    "Weather Desc",
+    "Sunrise",
+    "Sunset"
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: initialPosition,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-          _initTiles();
-        },
-        tileOverlays: _tileOverlays,
+      appBar: AppBar(
+        backgroundColor: c1,
+        centerTitle: true,
+        title: Text(
+          "NimbusCast",
+          style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                fontSize: 30,
+              ),
+        ),
       ),
+      body: _weather == null
+          ? const Center(
+              child: SizedBox(
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: c5.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            _cityDetailsName[index].toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(
+                                  fontSize: 25,
+                                ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            _cityDetails[index].toString(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .displaySmall
+                                ?.copyWith(
+                                    fontSize: 25, color: Colors.grey.shade600),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                  itemCount: _cityDetails.length,
+                ),
+              ),
+            ),
     );
   }
-
-  Future<void> InitialPosition(CameraPosition cameraPosition) async {
-    final GoogleMapController controller = await _controller.future;
-    await controller
-        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-  }
 }
-
-
