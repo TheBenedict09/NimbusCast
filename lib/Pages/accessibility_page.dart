@@ -14,11 +14,12 @@ class _AccessibilityPageState extends State<AccessibilityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: c5.withOpacity(0.4),
       appBar: AppBar(
         backgroundColor: c1,
         centerTitle: true,
         title: Text(
-          "Accessibility",
+          "NimbusCast",
           style: Theme.of(context).textTheme.displayLarge?.copyWith(
                 fontSize: 30,
               ),
@@ -31,139 +32,149 @@ class _AccessibilityPageState extends State<AccessibilityPage> {
               height: 30,
             ),
             Container(
-              width: 380,
+              width: double.infinity,
               height: 70,
-              color: Colors.transparent,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                    elevation: MaterialStatePropertyAll(9),
-                    backgroundColor: MaterialStatePropertyAll(c5)),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.settings,
-                      size: 40,
-                      color: Colors.black,
-                    ),
-                    const VerticalDivider(),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Alert Settings",
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            fontSize: 23,
-                          ),
-                    ),
-                  ],
-                ),
+              decoration: BoxDecoration(
+                color: c5.withOpacity(0.7),
+                boxShadow: [
+                  BoxShadow(blurRadius: 30, spreadRadius: 4, color: c5),
+                ],
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  const Icon(
+                    Icons.settings,
+                    size: 40,
+                    color: Colors.black,
+                  ),
+                  const VerticalDivider(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Alert Settings",
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontSize: 23,
+                        ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(
               height: 20,
             ),
             Container(
-              width: 380,
+              width: double.infinity,
               height: 70,
-              color: Colors.transparent,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                    elevation: MaterialStatePropertyAll(9),
-                    backgroundColor: MaterialStatePropertyAll(c5)),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.people,
-                      size: 40,
-                      color: Colors.black,
-                    ),
-                    const VerticalDivider(),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Community Hub",
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            fontSize: 23,
-                          ),
-                    ),
-                  ],
-                ),
+              decoration: BoxDecoration(
+                color: c5.withOpacity(0.7),
+                boxShadow: [
+                  BoxShadow(blurRadius: 30, spreadRadius: 4, color: c5),
+                ],
+              ),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 30,
+                  ),
+                  const Icon(
+                    Icons.people,
+                    size: 40,
+                    color: Colors.black,
+                  ),
+                  const VerticalDivider(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Community Hub",
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontSize: 23,
+                        ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(
               height: 20,
             ),
             Container(
-              width: 380,
+              width: double.infinity,
               height: 70,
-              color: Colors.transparent,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                  elevation: MaterialStatePropertyAll(9),
-                  backgroundColor: MaterialStatePropertyAll(c5),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.dangerous_outlined,
-                      size: 40,
-                      color: Colors.black,
-                    ),
-                    const VerticalDivider(),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "Risk Assessment",
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            fontSize: 23,
-                          ),
-                    ),
-                  ],
-                ),
+              decoration: BoxDecoration(
+                color: c5.withOpacity(0.7),
+                boxShadow: [
+                  BoxShadow(blurRadius: 30, spreadRadius: 4, color: c5),
+                ],
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  const Icon(
+                    Icons.dangerous_outlined,
+                    size: 40,
+                    color: Colors.black,
+                  ),
+                  const VerticalDivider(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Risk Assessment",
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontSize: 23,
+                        ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(
               height: 20,
             ),
             Container(
-              width: 380,
+              width: double.infinity,
               height: 70,
-              color: Colors.transparent,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll(c5),
-                    elevation: MaterialStatePropertyAll(9)),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.help_center,
-                      size: 40,
-                      color: Colors.black,
-                    ),
-                    const VerticalDivider(),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      "About & Support",
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            fontSize: 23,
-                          ),
-                    ),
-                  ],
-                ),
+              decoration: BoxDecoration(
+                color: c5.withOpacity(0.7),
+                boxShadow: [
+                  BoxShadow(blurRadius: 30, spreadRadius: 4, color: c5),
+                ],
+              ),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 30,
+                  ),
+                  const Icon(
+                    Icons.help_center,
+                    size: 40,
+                    color: Colors.black,
+                  ),
+                  const VerticalDivider(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "About & Support",
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontSize: 23,
+                        ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(
-              height: 100,
+            const SizedBox(
+              height: 40,
             ),
-            Lottie.asset('assets/animations/Funny.json', height: 220),
+            Lottie.asset(
+              'assets/animations/Funny.json',
+              height: 220,
+            ),
           ],
         ),
       ),

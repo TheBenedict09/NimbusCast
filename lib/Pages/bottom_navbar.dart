@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:nimbus_cast/Pages/accessibility_page.dart';
+import 'package:nimbus_cast/Pages/emergency_resources.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 import 'package:weather_icons/weather_icons.dart';
 
@@ -18,7 +19,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   static const List<Widget> _widgetsOptions = <Widget>[
     Text("Real Time Data"),
     Text("Forecast"),
-    Text("Emergency Resources"),
+    EmergencyResources(),
     AccessibilityPage(),
   ];
   @override
