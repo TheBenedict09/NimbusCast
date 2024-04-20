@@ -12,39 +12,29 @@ class ForecastPage extends StatefulWidget {
 
 class _ForecastPageState extends State<ForecastPage> {
   final WeatherFactory _wf = WeatherFactory(OPENWEATHER_API_KEY);
-
   Weather? _weather;
-  List _cityDetails = [];
+  List<Weather> _weatherList = [];
   @override
   void initState() {
     super.initState();
-    _wf.currentWeatherByCityName("Rajkot").then(
-      (w) {
-        setState(
-          () {
-            _weather = w;
-            _cityDetails = [
-              _weather?.humidity,
-              _weather?.pressure,
-              "${_weather?.latitude}° ${_weather?.longitude}° ",
-              _weather?.windSpeed,
-              "${_weather?.sunrise!.hour.toString().padLeft(2, '0')}:${_weather?.sunrise!.minute.toString().padLeft(2, '0')}",
-              "${_weather?.sunset!.hour.toString().padLeft(2, '0')}:${_weather?.sunset!.minute.toString().padLeft(2, '0')}",
-            ];
-          },
-        );
-      },
-    );
+    load();
   }
 
-  final List _cityDetailsName = [
-    "Humidity",
-    "Pressure",
-    "Location",
-    "Wind Speed",
-    "Sunrise",
-    "Sunset"
-  ];
+  void load() async {
+    await _wf.currentWeatherByCityName("Rajkot").then((w) {
+      setState(() {
+        _weather = w;
+      });
+    }).catchError((e) {
+      // Handle the error or notify the user
+      print('Error fetching current weather: $e');
+    });
+
+    List<Weather> forecast = await _wf.fiveDayForecastByCityName("Rajkot");
+    setState(() {
+      _weatherList = forecast;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +49,7 @@ class _ForecastPageState extends State<ForecastPage> {
               ),
         ),
       ),
-      body: _weather == null
+      body: _weather == null && _weatherList.isEmpty
           ? const Center(
               child: SizedBox(
                 child: CircularProgressIndicator(),
@@ -157,49 +147,61 @@ class _ForecastPageState extends State<ForecastPage> {
                     ),
                     Container(
                       width: 380,
-                      height: 46 * _cityDetailsName.length.toDouble(),
+                      height: 120,
                       decoration: BoxDecoration(
-                        color: c2.withOpacity(0.3),
+                        color: c5.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(22),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: ListView.separated(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return SizedBox(
-                                width: 380,
-                                height: 30,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      _cityDetailsName[index],
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(
-                                            fontSize: 20,
-                                          ),
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: _weatherList.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 47,
+                                    height: 90,
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "${_weatherList[index]!.date!.hour.toString().padLeft(2, '0')}:${_weatherList[index]!.date!.minute.toString().padLeft(2, '0')}",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(fontSize: 18),
+                                        ),
+                                        (weatherIconSelection(
+                                          _weatherList[index]
+                                              .weatherConditionCode!
+                                              .toInt(),
+                                        )),
+                                        Text(
+                                          _weatherList[index]
+                                                  .temperature!
+                                                  .celsius!
+                                                  .toStringAsFixed(0) +
+                                              "°C",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displaySmall
+                                              ?.copyWith(
+                                                  fontSize: 16,
+                                                  color: Colors.grey.shade600),
+                                        )
+                                      ],
                                     ),
-                                    Text(
-                                      _cityDetails[index].toString(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .displaySmall
-                                          ?.copyWith(
-                                            fontSize: 20,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return const Divider();
-                            },
-                            itemCount: _cityDetailsName.length),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, index) {
+                          return VerticalDivider();
+                        },
                       ),
                     ),
                     const SizedBox(
