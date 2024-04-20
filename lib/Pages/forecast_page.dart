@@ -21,7 +21,7 @@ class _ForecastPageState extends State<ForecastPage> {
   }
 
   void load() async {
-    await _wf.currentWeatherByCityName("Rajkot").then((w) {
+    await _wf.currentWeatherByCityName("Bokaro").then((w) {
       setState(() {
         _weather = w;
       });
@@ -30,7 +30,7 @@ class _ForecastPageState extends State<ForecastPage> {
       print('Error fetching current weather: $e');
     });
 
-    List<Weather> forecast = await _wf.fiveDayForecastByCityName("Rajkot");
+    List<Weather> forecast = await _wf.fiveDayForecastByCityName("Bokaro");
     setState(() {
       _weatherList = forecast;
     });
@@ -158,53 +158,137 @@ class _ForecastPageState extends State<ForecastPage> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 47,
-                                    height: 90,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          "${_weatherList[index]!.date!.hour.toString().padLeft(2, '0')}:${_weatherList[index]!.date!.minute.toString().padLeft(2, '0')}",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall
-                                              ?.copyWith(fontSize: 18),
-                                        ),
-                                        (weatherIconSelection(
-                                          _weatherList[index]
-                                              .weatherConditionCode!
-                                              .toInt(),
-                                        )),
-                                        Text(
-                                          _weatherList[index]
-                                                  .temperature!
-                                                  .celsius!
-                                                  .toStringAsFixed(0) +
-                                              "°C",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displaySmall
-                                              ?.copyWith(
-                                                  fontSize: 16,
-                                                  color: Colors.grey.shade600),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 47,
+                                  height: 90,
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "${_weatherList[index]!.date!.hour.toString().padLeft(2, '0')}:${_weatherList[index]!.date!.minute.toString().padLeft(2, '0')}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(fontSize: 18),
+                                      ),
+                                      (weatherIconSelection(
+                                        _weatherList[index]
+                                            .weatherConditionCode!
+                                            .toInt(),
+                                      )),
+                                      Text(
+                                        "${_weatherList[index].temperature!.celsius!.toStringAsFixed(0)}°C",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(
+                                                fontSize: 16,
+                                                color: Colors.grey.shade600),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                           );
                         },
                         separatorBuilder: (context, index) {
-                          return VerticalDivider();
+                          return const VerticalDivider();
                         },
                       ),
                     ),
                     const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: 380,
+                      height: 265,
+                      decoration: BoxDecoration(
+                        color: c5.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: ListView.separated(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _weatherList.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        index * 10 < 40
+                                            ? "${_weatherList[((index + 1) * 8)]!.date!.day.toString().padLeft(2, '0')}/${_weatherList[index * 5]!.date!.month.toString().padLeft(2, '0')}"
+                                            : "N/A",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(
+                                              fontSize: 16,
+                                            ),
+                                      ),
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      index * 10 < 40
+                                          ? Container(
+                                              width: 50,
+                                              height: 50,
+                                              child: weatherIconSelection(
+                                                _weatherList[(index + 1) * 8]
+                                                    .weatherConditionCode!
+                                                    .toInt(),
+                                              ),
+                                            )
+                                          : Text('N/A'),
+                                    ],
+                                  ),
+                                  Text(
+                                    index * 10 < 40
+                                        ? _weatherList[(index + 1) * 8]
+                                            .weatherDescription
+                                            .toString()
+                                        : "N/A",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall
+                                        ?.copyWith(
+                                          fontSize: 16,
+                                        ),
+                                  ),
+                                  Text(
+                                    index * 10 < 40
+                                        ? "${_weatherList[(index + 1) * 8].temperature!.celsius!.toStringAsFixed(0)}°C/${_weatherList[(index + 1) * 8].tempFeelsLike!.celsius!.toStringAsFixed(0)}°C"
+                                        : "N/A",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall
+                                        ?.copyWith(
+                                          fontSize: 16,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                                width: 360,
+                                child: Divider(
+                                  color: Colors.grey.shade500,
+                                ));
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
                       height: 20,
                     ),
                   ],

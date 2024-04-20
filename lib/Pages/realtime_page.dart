@@ -104,7 +104,7 @@ class _RealTimePageState extends State<RealTimePage> {
                                   fontSize: 25,
                                 ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Text(
