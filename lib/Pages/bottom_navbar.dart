@@ -5,6 +5,7 @@ import 'package:nimbus_cast/Pages/emergency_resources.dart';
 import 'package:nimbus_cast/Pages/forecast_page.dart';
 import 'package:nimbus_cast/Pages/map.dart';
 import 'package:nimbus_cast/Pages/realtime_page.dart';
+import 'package:nimbus_cast/Pages/simulation_page.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -19,7 +20,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   static const List<Widget> _widgetsOptions = <Widget>[
     ForecastPage(),
-    RealTimePage(),
+    SimulationPage(),
     EmergencyResources(weatherAlert: false),
     AccessibilityPage(),
   ];
@@ -46,7 +47,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               padding: const EdgeInsets.all(16),
               tabs: const [
                 GButton(icon: Icons.cloud, text: "Local"),
-                GButton(icon: Icons.storm, text: "Real-Time"),
+                GButton(icon: Icons.auto_awesome, text: "Simulation"),
                 GButton(icon: Icons.emergency_rounded, text: "Emergency"),
                 GButton(icon: Icons.accessibility, text: "Accessibility"),
               ],

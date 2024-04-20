@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nimbus_cast/Pages/realtime_page.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 import 'package:nimbus_cast/utilities/consts.dart';
 import 'package:nimbus_cast/utilities/weather_icon.dart';
 import 'package:weather/weather.dart';
 
 class ForecastPage extends StatefulWidget {
-  const ForecastPage({super.key});
+  const ForecastPage({Key? key}) : super(key: key);
   @override
   State<ForecastPage> createState() => _ForecastPageState();
 }
@@ -14,6 +15,7 @@ class _ForecastPageState extends State<ForecastPage> {
   final WeatherFactory _wf = WeatherFactory(OPENWEATHER_API_KEY);
   Weather? _weather;
   List<Weather> _weatherList = [];
+
   @override
   void initState() {
     super.initState();
@@ -39,6 +41,16 @@ class _ForecastPageState extends State<ForecastPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: callRealTimePage,
+        label: Text(
+          'Real Time Details',
+          style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                fontSize: 17,
+              ),
+        ),
+        icon: const Icon(Icons.storm),
+      ),
       appBar: AppBar(
         backgroundColor: c1,
         centerTitle: true,
@@ -49,37 +61,31 @@ class _ForecastPageState extends State<ForecastPage> {
               ),
         ),
       ),
-      body: _weather == null && _weatherList.isEmpty
+      body: (_weather == null && _weatherList.isEmpty)
           ? const Center(
-              child: SizedBox(
-                child: CircularProgressIndicator(),
-              ),
+              child: CircularProgressIndicator(),
             )
-          : SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-              child: SingleChildScrollView(
+          : SingleChildScrollView(
+              child: Center(
                 child: Column(
                   children: [
                     const SizedBox(
                       height: 20,
                     ),
                     Text(
-                      _weather!.areaName.toString(),
+                      _weather!.areaName ?? "",
                       style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             fontSize: 40,
                           ),
                     ),
-                    Text(
+                    const Text(
                       "Cloud Burst Risk: ",
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                            fontSize: 20,
-                          ),
+                      style: TextStyle(fontSize: 20),
                     ),
                     SizedBox(
                       height: 220,
                       child: weatherIconSelection(
-                          _weather!.weatherConditionCode as int),
+                          _weather!.weatherConditionCode!.toInt()),
                     ),
                     Container(
                       width: 290,
@@ -104,14 +110,9 @@ class _ForecastPageState extends State<ForecastPage> {
                                           fontSize: 20,
                                         ),
                                   ),
-                                  Text(
+                                  const Text(
                                     "Temperature",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(
-                                          fontSize: 20,
-                                        ),
+                                    style: TextStyle(fontSize: 20),
                                   )
                                 ],
                               ),
@@ -126,14 +127,9 @@ class _ForecastPageState extends State<ForecastPage> {
                                           fontSize: 20,
                                         ),
                                   ),
-                                  Text(
+                                  const Text(
                                     "Feels Like",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(
-                                          fontSize: 20,
-                                        ),
+                                    style: TextStyle(fontSize: 20),
                                   )
                                 ],
                               )
@@ -166,7 +162,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                   child: Column(
                                     children: [
                                       Text(
-                                        "${_weatherList[index]!.date!.hour.toString().padLeft(2, '0')}:${_weatherList[index]!.date!.minute.toString().padLeft(2, '0')}",
+                                        "${_weatherList[index].date!.hour.toString().padLeft(2, '0')}:${_weatherList[index].date!.minute.toString().padLeft(2, '0')}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .displaySmall
@@ -225,7 +221,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                     children: [
                                       Text(
                                         index * 10 < 40
-                                            ? "${_weatherList[((index + 1) * 8)]!.date!.day.toString().padLeft(2, '0')}/${_weatherList[index * 5]!.date!.month.toString().padLeft(2, '0')}"
+                                            ? "${_weatherList[((index + 1) * 8)].date!.day.toString().padLeft(2, '0')}/${_weatherList[index * 5].date!.month.toString().padLeft(2, '0')}"
                                             : "N/A",
                                         style: Theme.of(context)
                                             .textTheme
@@ -234,7 +230,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                               fontSize: 16,
                                             ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 30,
                                       ),
                                       index * 10 < 40
@@ -247,7 +243,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                                     .toInt(),
                                               ),
                                             )
-                                          : Text('N/A'),
+                                          : const Text('N/A'),
                                     ],
                                   ),
                                   Text(
@@ -288,13 +284,24 @@ class _ForecastPageState extends State<ForecastPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                   ],
                 ),
               ),
             ),
+    );
+  }
+
+  void callRealTimePage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return RealTimePage();
+        },
+      ),
     );
   }
 }
