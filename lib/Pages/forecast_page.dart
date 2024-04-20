@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:nimbus_cast/Pages/realtime_page.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 import 'package:nimbus_cast/utilities/consts.dart';
@@ -15,15 +18,60 @@ class _ForecastPageState extends State<ForecastPage> {
   final WeatherFactory _wf = WeatherFactory(OPENWEATHER_API_KEY);
   Weather? _weather;
   List<Weather> _weatherList = [];
+  late Position currentPosition;
+  String cityName = "";
 
   @override
   void initState() {
     super.initState();
-    load();
+    _determinePosition();
+  }
+
+  Future<void> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      Fluttertoast.showToast(msg: "Please keep your Location ON");
+      return;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      Fluttertoast.showToast(msg: "Location Permission Denied Forever");
+      return;
+    }
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        Fluttertoast.showToast(msg: "Location Permission Denied");
+        return;
+      }
+    }
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      if (placemarks.isNotEmpty) {
+        setState(() {
+          currentPosition = position;
+          cityName = placemarks[0].administrativeArea ?? 'Unknown';
+        });
+        load();
+      }
+    } catch (e) {
+      print(e);
+      Fluttertoast.showToast(msg: "Failed to fetch location data");
+    }
   }
 
   void load() async {
-    await _wf.currentWeatherByCityName("Bokaro").then((w) {
+    print(cityName);
+
+    await _wf.currentWeatherByCityName(cityName).then((w) {
       setState(() {
         _weather = w;
       });
@@ -32,7 +80,7 @@ class _ForecastPageState extends State<ForecastPage> {
       print('Error fetching current weather: $e');
     });
 
-    List<Weather> forecast = await _wf.fiveDayForecastByCityName("Bokaro");
+    List<Weather> forecast = await _wf.fiveDayForecastByCityName("california");
     setState(() {
       _weatherList = forecast;
     });
@@ -61,7 +109,7 @@ class _ForecastPageState extends State<ForecastPage> {
               ),
         ),
       ),
-      body: (_weather == null && _weatherList.isEmpty)
+      body: (_weather == null || _weatherList.isEmpty)
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -73,14 +121,16 @@ class _ForecastPageState extends State<ForecastPage> {
                       height: 20,
                     ),
                     Text(
-                      _weather!.areaName ?? "",
+                      cityName ?? "",
                       style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             fontSize: 40,
                           ),
                     ),
-                    const Text(
+                    Text(
                       "Cloud Burst Risk: ",
-                      style: TextStyle(fontSize: 20),
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            fontSize: 20,
+                          ),
                     ),
                     SizedBox(
                       height: 220,
@@ -110,9 +160,14 @@ class _ForecastPageState extends State<ForecastPage> {
                                           fontSize: 20,
                                         ),
                                   ),
-                                  const Text(
+                                  Text(
                                     "Temperature",
-                                    style: TextStyle(fontSize: 20),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall
+                                        ?.copyWith(
+                                            fontSize: 20,
+                                            color: Colors.grey.shade600),
                                   )
                                 ],
                               ),
@@ -127,9 +182,15 @@ class _ForecastPageState extends State<ForecastPage> {
                                           fontSize: 20,
                                         ),
                                   ),
-                                  const Text(
+                                  Text(
                                     "Feels Like",
-                                    style: TextStyle(fontSize: 20),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displaySmall
+                                        ?.copyWith(
+                                          fontSize: 20,
+                                          color: Colors.grey.shade600,
+                                        ),
                                   )
                                 ],
                               )
@@ -285,7 +346,7 @@ class _ForecastPageState extends State<ForecastPage> {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 80,
                     ),
                   ],
                 ),
@@ -299,7 +360,7 @@ class _ForecastPageState extends State<ForecastPage> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return RealTimePage();
+          return RealTimePage(cityname: cityName,);
         },
       ),
     );

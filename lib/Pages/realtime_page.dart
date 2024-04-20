@@ -4,7 +4,8 @@ import 'package:nimbus_cast/utilities/consts.dart';
 import 'package:weather/weather.dart';
 
 class RealTimePage extends StatefulWidget {
-  const RealTimePage({super.key});
+  final String cityname;
+  const RealTimePage({super.key, required this.cityname});
 
   @override
   State<RealTimePage> createState() => _RealTimePageState();
@@ -18,7 +19,7 @@ class _RealTimePageState extends State<RealTimePage> {
   @override
   void initState() {
     super.initState();
-    _wf.currentWeatherByCityName("Rajkot").then(
+    _wf.currentWeatherByCityName(widget.cityname).then(
       (w) {
         setState(
           () {
