@@ -63,7 +63,6 @@ class _ForecastPageState extends State<ForecastPage> {
         load();
       }
     } catch (e) {
-      print(e);
       Fluttertoast.showToast(msg: "Failed to fetch location data");
     }
   }
@@ -260,7 +259,7 @@ class _ForecastPageState extends State<ForecastPage> {
                     ),
                     Container(
                       width: 380,
-                      height: 265,
+                      height: 272,
                       decoration: BoxDecoration(
                         color: c5.withOpacity(0.7),
                         borderRadius: BorderRadius.circular(22),
@@ -360,7 +359,9 @@ class _ForecastPageState extends State<ForecastPage> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return RealTimePage(cityname: cityName,);
+          return RealTimePage(
+            cityname: cityName,
+          );
         },
       ),
     );
