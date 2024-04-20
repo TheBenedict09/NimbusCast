@@ -9,7 +9,10 @@ import 'package:nimbus_cast/utilities/weather_icon.dart';
 import 'package:weather/weather.dart';
 
 class ForecastPage extends StatefulWidget {
-  const ForecastPage({Key? key}) : super(key: key);
+  final String changeCity;
+  final String source;
+  const ForecastPage(
+      {super.key, required this.changeCity, required this.source});
   @override
   State<ForecastPage> createState() => _ForecastPageState();
 }
@@ -24,7 +27,14 @@ class _ForecastPageState extends State<ForecastPage> {
   @override
   void initState() {
     super.initState();
-    _determinePosition();
+    if (widget.source == "changeLocation") {
+      setState(() {
+        cityName = widget.changeCity; // Set city name from passed argument
+      });
+      load(); // Load weather directly for the changed city
+    } else {
+      _determinePosition(); // Only determine position if not changing location manually
+    }
   }
 
   Future<void> _determinePosition() async {
@@ -68,21 +78,19 @@ class _ForecastPageState extends State<ForecastPage> {
   }
 
   void load() async {
-    print(cityName);
+    print("Loading weather for: $cityName");
 
-    await _wf.currentWeatherByCityName(cityName).then((w) {
+    try {
+      Weather? currentWeather = await _wf.currentWeatherByCityName(cityName);
+      List<Weather> forecast = await _wf.fiveDayForecastByCityName(cityName);
       setState(() {
-        _weather = w;
+        _weather = currentWeather;
+        _weatherList = forecast;
       });
-    }).catchError((e) {
-      // Handle the error or notify the user
-      print('Error fetching current weather: $e');
-    });
-
-    List<Weather> forecast = await _wf.fiveDayForecastByCityName("california");
-    setState(() {
-      _weatherList = forecast;
-    });
+    } catch (e) {
+      print('Error fetching weather data for $cityName: $e');
+      Fluttertoast.showToast(msg: "Failed to fetch weather data for $cityName");
+    }
   }
 
   @override

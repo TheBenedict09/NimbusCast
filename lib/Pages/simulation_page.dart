@@ -56,7 +56,7 @@ class _SimulationPageState extends State<SimulationPage> {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(21),
-                color: c1.withOpacity(0.3),
+                color: Colors.white,
               ),
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -90,7 +90,7 @@ class _SimulationPageState extends State<SimulationPage> {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(21),
-                color: c1.withOpacity(0.3),
+                color: Colors.white,
               ),
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -124,7 +124,7 @@ class _SimulationPageState extends State<SimulationPage> {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(21),
-                color: c1.withOpacity(0.3),
+                color: Colors.white,
               ),
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -158,7 +158,7 @@ class _SimulationPageState extends State<SimulationPage> {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(21),
-                color: c1.withOpacity(0.3),
+                color: Colors.white,
               ),
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -192,7 +192,7 @@ class _SimulationPageState extends State<SimulationPage> {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(21),
-                color: c1.withOpacity(0.3),
+                color: Colors.white,
               ),
               child: TextField(
                 keyboardType: TextInputType.number,
@@ -226,7 +226,7 @@ class _SimulationPageState extends State<SimulationPage> {
               height: 50,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(21),
-                color: c1.withOpacity(0.3),
+                color: Colors.white,
               ),
               child: TextField(
                 keyboardType: TextInputType.number,

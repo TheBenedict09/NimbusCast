@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const BottomNavBar(),
+      home: const BottomNavBar(source: "main", cityName: ""),
       debugShowCheckedModeBanner: false,
     );
   }

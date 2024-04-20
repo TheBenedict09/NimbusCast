@@ -11,7 +11,9 @@ import 'package:nimbus_cast/Pages/simulation_page.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+  final String source;
+  final String cityName;
+  const BottomNavBar({Key? key, required this.source, required this.cityName}) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -67,12 +69,17 @@ class _BottomNavBarState extends State<BottomNavBar> {
   //     Fluttertoast.showToast(msg: "Failed to fetch location data");
   //   }
   // }
+  @override
+  void initState() {
+    super.initState();
+    _index = 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     // ignore: no_leading_underscores_for_local_identifiers
     List<Widget> _widgetsOptions = <Widget>[
-      ForecastPage(),
+      ForecastPage(changeCity: widget.cityName, source: widget.source),
       const SimulationPage(),
       const EmergencyResources(weatherAlert: false),
       const AccessibilityPage(),
