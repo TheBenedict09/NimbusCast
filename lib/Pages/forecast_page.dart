@@ -9,12 +9,16 @@ import 'package:nimbus_cast/utilities/colors.dart';
 import 'package:nimbus_cast/utilities/consts.dart';
 import 'package:nimbus_cast/utilities/weather_icon.dart';
 import 'package:weather/weather.dart';
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:math';
+import 'package:http/http.dart' as http; // Import the http package
 
 class ForecastPage extends StatefulWidget {
   final String changeCity;
   final String source;
-  const ForecastPage(
-      {super.key, required this.changeCity, required this.source});
+  const ForecastPage({Key? key, required this.changeCity, required this.source})
+      : super(key: key);
   @override
   State<ForecastPage> createState() => _ForecastPageState();
 }
@@ -25,6 +29,7 @@ class _ForecastPageState extends State<ForecastPage> {
   List<Weather> _weatherList = [];
   late Position currentPosition;
   String cityName = "";
+  Future<double>? result;
 
   @override
   void initState() {
@@ -88,6 +93,20 @@ class _ForecastPageState extends State<ForecastPage> {
       setState(() {
         _weather = currentWeather;
         _weatherList = forecast;
+
+        // Move the fetchDataFromAPI call here
+        try {
+          result = fetchDataFromAPI(
+            _weather!.temperature!.celsius!.toInt(),
+            _weather!.tempFeelsLike!.celsius!.toInt(),
+            _weather!.humidity!,
+            _weather!.windSpeed!,
+            _weather!.pressure!,
+            _weather!.windDegree!,
+          );
+        } catch (e) {
+          print(e.toString());
+        }
       });
     } catch (e) {
       print('Error fetching weather data for $cityName: $e');
@@ -105,9 +124,8 @@ class _ForecastPageState extends State<ForecastPage> {
         onPressed: callRealTimePage,
         label: Text(
           'Real Time Details',
-          style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                fontSize: 17,
-              ),
+          style:
+              Theme.of(context).textTheme.displaySmall?.copyWith(fontSize: 17),
         ),
         icon: const Icon(Icons.storm),
       ),
@@ -135,9 +153,10 @@ class _ForecastPageState extends State<ForecastPage> {
                     ),
                     Text(
                       cityName ?? "",
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                            fontSize: 40,
-                          ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(fontSize: 40),
                     ),
                     SizedBox(
                       height: 220,
@@ -145,8 +164,8 @@ class _ForecastPageState extends State<ForecastPage> {
                           _weather!.weatherConditionCode!.toInt()),
                     ),
                     Container(
-                      width: 290,
-                      height: 90,
+                      width: 310,
+                      height: 108,
                       decoration: BoxDecoration(
                           color: c5.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(22)),
@@ -163,12 +182,10 @@ class _ForecastPageState extends State<ForecastPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .displaySmall
-                                        ?.copyWith(
-                                          fontSize: 20,
-                                        ),
+                                        ?.copyWith(fontSize: 20),
                                   ),
                                   Text(
-                                    "Temperature",
+                                    "Temp",
                                     style: Theme.of(context)
                                         .textTheme
                                         .displaySmall
@@ -177,6 +194,46 @@ class _ForecastPageState extends State<ForecastPage> {
                                   )
                                 ],
                               ),
+                              FutureBuilder<double>(
+                                future: result,
+                                builder: (context, snapshot) {
+                                  return Column(
+                                    children: [
+                                      Text(
+                                        snapshot.hasData
+                                            ? '${(snapshot.data!*100).toStringAsFixed(3)}%'
+                                            : 'N/A',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(fontSize: 20),
+                                      ),
+                                      Column(
+                                        children: [
+                                          Text(
+                                            "Cloud",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall
+                                                ?.copyWith(
+                                                    fontSize: 20,
+                                                    color: Colors.white),
+                                          ),
+                                          Text(
+                                            "Burst",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displaySmall
+                                                ?.copyWith(
+                                                    fontSize: 20,
+                                                    color: Colors.white),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                },
+                              ),
                               Column(
                                 children: [
                                   Text(
@@ -184,19 +241,29 @@ class _ForecastPageState extends State<ForecastPage> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .displaySmall
-                                        ?.copyWith(
-                                          fontSize: 20,
-                                        ),
+                                        ?.copyWith(fontSize: 20),
                                   ),
-                                  Text(
-                                    "Feels Like",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displaySmall
-                                        ?.copyWith(
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                        ),
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Feels",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(
+                                                fontSize: 20,
+                                                color: Colors.white),
+                                      ),
+                                      Text(
+                                        "like",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displaySmall
+                                            ?.copyWith(
+                                                fontSize: 20,
+                                                color: Colors.white),
+                                      ),
+                                    ],
                                   )
                                 ],
                               )

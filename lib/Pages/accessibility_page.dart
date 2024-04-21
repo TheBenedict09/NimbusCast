@@ -27,15 +27,16 @@ class _AccessibilityPageState extends State<AccessibilityPage> {
         height: 150,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      backgroundColor: c5.withOpacity(0.4),
+      backgroundColor: c1.withOpacity(0.3),
       appBar: AppBar(
         backgroundColor: c1,
         centerTitle: true,
         title: Text(
           "NimbusCast",
-          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                fontSize: 30,
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(fontSize: 30, color: Colors.white),
         ),
       ),
       body: Center(
@@ -45,49 +46,11 @@ class _AccessibilityPageState extends State<AccessibilityPage> {
               height: 30,
             ),
             Container(
-              width: double.infinity,
+              width: 380,
               height: 70,
               decoration: BoxDecoration(
-                color: c5.withOpacity(0.7),
-                boxShadow: const [
-                  BoxShadow(blurRadius: 30, spreadRadius: 4, color: c5),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  const Icon(
-                    Icons.settings,
-                    size: 40,
-                    color: Colors.black,
-                  ),
-                  const VerticalDivider(),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Alert Settings",
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                          fontSize: 23,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              width: double.infinity,
-              height: 70,
-              decoration: BoxDecoration(
-                color: c5.withOpacity(0.7),
-                boxShadow: const [
-                  BoxShadow(blurRadius: 30, spreadRadius: 4, color: c5),
-                ],
-              ),
+                  color: c1.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(22)),
               child: Row(
                 children: [
                   const SizedBox(
@@ -113,38 +76,6 @@ class _AccessibilityPageState extends State<AccessibilityPage> {
             ),
             const SizedBox(
               height: 20,
-            ),
-            Container(
-              width: double.infinity,
-              height: 70,
-              decoration: BoxDecoration(
-                color: c5.withOpacity(0.7),
-                boxShadow: const [
-                  BoxShadow(blurRadius: 30, spreadRadius: 4, color: c5),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  const Icon(
-                    Icons.dangerous_outlined,
-                    size: 40,
-                    color: Colors.black,
-                  ),
-                  const VerticalDivider(),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    "Risk Assessment",
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                          fontSize: 23,
-                        ),
-                  ),
-                ],
-              ),
             ),
             const SizedBox(
               height: 20,
@@ -174,7 +105,10 @@ class _AccessibilityPageState extends State<AccessibilityPage> {
                             Navigator.pushAndRemoveUntil(context,
                                 MaterialPageRoute(
                               builder: (context) {
-                                return BottomNavBar(source: "changeLocation", cityName: _changeLocation!.text,);
+                                return BottomNavBar(
+                                  source: "changeLocation",
+                                  cityName: _changeLocation!.text,
+                                );
                               },
                             ), (route) => false);
                           },
@@ -186,14 +120,11 @@ class _AccessibilityPageState extends State<AccessibilityPage> {
                 );
               },
               child: Container(
-                width: double.infinity,
+                width: 380,
                 height: 70,
                 decoration: BoxDecoration(
-                  color: c5.withOpacity(0.7),
-                  boxShadow: const [
-                    BoxShadow(blurRadius: 30, spreadRadius: 4, color: c5),
-                  ],
-                ),
+                    color: c1.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(22)),
                 child: Row(
                   children: [
                     const SizedBox(

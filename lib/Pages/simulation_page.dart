@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:nimbus_cast/utilities/cloud_prediction.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
@@ -18,6 +16,7 @@ class _SimulationPageState extends State<SimulationPage> {
       _windSpeed,
       _windBering,
       _pressure;
+  double? result;
   @override
   void initState() {
     super.initState();
@@ -40,6 +39,7 @@ class _SimulationPageState extends State<SimulationPage> {
           "NimbusCast",
           style: Theme.of(context).textTheme.displayLarge?.copyWith(
                 fontSize: 30,
+                color: Colors.white
               ),
         ),
       ),
@@ -278,14 +278,14 @@ class _SimulationPageState extends State<SimulationPage> {
                 height: 50,
                 child: FloatingActionButton(
                   onPressed: () async {
-                    String result = await fetchDataFromAPI(
+                    result = (await fetchDataFromAPI(
                       int.parse(_temperature!.text),
                       int.parse(_feelsLike!.text),
-                      int.parse(_humidity!.text),
-                      int.parse(_windSpeed!.text),
-                      int.parse(_pressure!.text),
-                      int.parse(_windBering!.text),
-                    );
+                      double.parse(_humidity!.text),
+                      double.parse(_windSpeed!.text),
+                      double.parse(_pressure!.text),
+                      double.parse(_windBering!.text),
+                    ));
                     // ignore: use_build_context_synchronously
                     showDialog(
                       context: context,
@@ -309,8 +309,9 @@ class _SimulationPageState extends State<SimulationPage> {
                                   height: 20,
                                 ),
                                 Text(
-                                  "${result}%",
+                                  "${(result!*100).toStringAsFixed(3)}%",
                                   style: Theme.of(context)
+
                                       .textTheme
                                       .displaySmall
                                       ?.copyWith(

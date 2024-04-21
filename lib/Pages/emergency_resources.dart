@@ -36,14 +36,16 @@ class _EmergencyResourcesState extends State<EmergencyResources> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: c1.withOpacity(0.3),
       appBar: AppBar(
         backgroundColor: c1,
         centerTitle: true,
         title: Text(
           "NimbusCast",
-          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                fontSize: 30,
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(fontSize: 30, color: Colors.white),
         ),
       ),
       body: Center(
