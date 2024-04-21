@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:nimbus_cast/Pages/realtime_page.dart';
+import 'package:nimbus_cast/utilities/cloud_prediction.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 import 'package:nimbus_cast/utilities/consts.dart';
 import 'package:nimbus_cast/utilities/weather_icon.dart';
@@ -134,8 +135,15 @@ class _ForecastPageState extends State<ForecastPage> {
                           ),
                     ),
                     Text(
-                      "Cloud Burst Risk: ",
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      // "Cloud Burst Risk: ${fetchDataFromAPI(
+                      //   _weather?.temperature as int ?? 0,
+                      //   _weather!.tempFeelsLike?.round() ?? 0,
+                      //   _weather!.humidity?.toInt() ?? 0,
+                      //   _weather!.windSpeed?.toInt() ?? 0,
+                      //   _weather!.pressure?.toInt() ?? 0,
+                      //   _weather!.windDegree?.toInt() ?? 0,
+                      // )}",
+                      "",style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             fontSize: 20,
                           ),
                     ),
