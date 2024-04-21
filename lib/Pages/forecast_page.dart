@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:nimbus_cast/Pages/realtime_page.dart';
+import 'package:nimbus_cast/utilities/background_color.dart';
 import 'package:nimbus_cast/utilities/cloud_prediction.dart';
 import 'package:nimbus_cast/utilities/colors.dart';
 import 'package:nimbus_cast/utilities/consts.dart';
@@ -97,6 +98,9 @@ class _ForecastPageState extends State<ForecastPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: _weather != null
+          ? backGroundColorPicker(_weather!.weatherConditionCode!.toInt())
+          : c1,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: callRealTimePage,
         label: Text(
@@ -112,9 +116,10 @@ class _ForecastPageState extends State<ForecastPage> {
         centerTitle: true,
         title: Text(
           "NimbusCast",
-          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                fontSize: 30,
-              ),
+          style: Theme.of(context)
+              .textTheme
+              .displayLarge
+              ?.copyWith(fontSize: 30, color: Colors.white),
         ),
       ),
       body: (_weather == null || _weatherList.isEmpty)
@@ -132,19 +137,6 @@ class _ForecastPageState extends State<ForecastPage> {
                       cityName ?? "",
                       style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             fontSize: 40,
-                          ),
-                    ),
-                    Text(
-                      // "Cloud Burst Risk: ${fetchDataFromAPI(
-                      //   _weather?.temperature as int ?? 0,
-                      //   _weather!.tempFeelsLike?.round() ?? 0,
-                      //   _weather!.humidity?.toInt() ?? 0,
-                      //   _weather!.windSpeed?.toInt() ?? 0,
-                      //   _weather!.pressure?.toInt() ?? 0,
-                      //   _weather!.windDegree?.toInt() ?? 0,
-                      // )}",
-                      "",style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                            fontSize: 20,
                           ),
                     ),
                     SizedBox(
@@ -181,8 +173,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                         .textTheme
                                         .displaySmall
                                         ?.copyWith(
-                                            fontSize: 20,
-                                            color: Colors.grey.shade600),
+                                            fontSize: 20, color: Colors.white),
                                   )
                                 ],
                               ),
@@ -204,7 +195,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                         .displaySmall
                                         ?.copyWith(
                                           fontSize: 20,
-                                          color: Colors.grey.shade600,
+                                          color: Colors.white,
                                         ),
                                   )
                                 ],
@@ -256,7 +247,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                             .displaySmall
                                             ?.copyWith(
                                                 fontSize: 16,
-                                                color: Colors.grey.shade600),
+                                                color: Colors.black),
                                       )
                                     ],
                                   ),
@@ -297,7 +288,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                     children: [
                                       Text(
                                         index * 10 < 40
-                                            ? "${_weatherList[((index + 1) * 8)].date!.day.toString().padLeft(2, '0')}/${_weatherList[index * 5].date!.month.toString().padLeft(2, '0')}"
+                                            ? "${_weatherList[((index + 1) * 7)].date!.day.toString().padLeft(2, '0')}/${_weatherList[index * 5].date!.month.toString().padLeft(2, '0')}"
                                             : "N/A",
                                         style: Theme.of(context)
                                             .textTheme
@@ -314,7 +305,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                               width: 50,
                                               height: 50,
                                               child: weatherIconSelection(
-                                                _weatherList[(index + 1) * 8]
+                                                _weatherList[(index + 1) * 7]
                                                     .weatherConditionCode!
                                                     .toInt(),
                                               ),
@@ -324,7 +315,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                   ),
                                   Text(
                                     index * 10 < 40
-                                        ? _weatherList[(index + 1) * 8]
+                                        ? _weatherList[(index + 1) * 7]
                                             .weatherDescription
                                             .toString()
                                         : "N/A",
@@ -337,7 +328,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                   ),
                                   Text(
                                     index * 10 < 40
-                                        ? "${_weatherList[(index + 1) * 8].temperature!.celsius!.toStringAsFixed(0)}°C/${_weatherList[(index + 1) * 8].tempFeelsLike!.celsius!.toStringAsFixed(0)}°C"
+                                        ? "${_weatherList[(index + 1) * 7].temperature!.celsius!.toStringAsFixed(0)}°C/${_weatherList[(index + 1) * 7].tempFeelsLike!.celsius!.toStringAsFixed(0)}°C"
                                         : "N/A",
                                     style: Theme.of(context)
                                         .textTheme

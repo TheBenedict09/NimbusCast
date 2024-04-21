@@ -90,10 +90,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: c1,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(28),
-            topRight: Radius.circular(28),
-          ),
+          
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 7.5),

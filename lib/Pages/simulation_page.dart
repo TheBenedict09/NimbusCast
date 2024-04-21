@@ -281,10 +281,10 @@ class _SimulationPageState extends State<SimulationPage> {
                     String result = await fetchDataFromAPI(
                       int.parse(_temperature!.text),
                       int.parse(_feelsLike!.text),
-                      double.parse(_humidity!.text),
-                      double.parse(_windSpeed!.text),
-                      double.parse(_pressure!.text),
-                      double.parse(_windBering!.text),
+                      int.parse(_humidity!.text),
+                      int.parse(_windSpeed!.text),
+                      int.parse(_pressure!.text),
+                      int.parse(_windBering!.text),
                     );
                     // ignore: use_build_context_synchronously
                     showDialog(
