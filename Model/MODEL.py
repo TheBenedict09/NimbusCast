@@ -3,6 +3,8 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB,MultinomialNB,BernoulliNB
+from sklearn.metrics import accuracy_score,confusion_matrix,precision_score,recall_score
 
 # Load the dataset
 df = pd.read_csv(
@@ -27,7 +29,8 @@ X = (X - X.mean()) / X.std()
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
-
+# Get the number of classes
+num_classes = len(np.unique(y))
 # Define the neural network architecture
 model = tf.keras.Sequential(
     [
@@ -35,7 +38,7 @@ model = tf.keras.Sequential(
         tf.keras.layers.Dense(128, activation="relu"),
         tf.keras.layers.Dense(64, activation="relu"),
         tf.keras.layers.Dense(32, activation="relu"),
-        tf.keras.layers.Dense(10, activation="softmax"),
+        tf.keras.layers.Dense(num_classes, activation="softmax"),
     ]
 )
 # Compile the model
@@ -60,6 +63,14 @@ history = model.fit(
 # Evaluate the model
 loss, accuracy = model.evaluate(X_test, y_test)
 print("Test Accuracy:", accuracy)
+gnb = GaussianNB()
+
+gnb.fit(X_train,y_train)
+y_pred = gnb.predict(X_test)
+print(f"accuracy score:{accuracy_score(y_test,y_pred)}")
+print(f"confusion matrix:{confusion_matrix(y_test,y_pred)}")
+print(f"precision score:{precision_score(y_test,y_pred,average = None)}")
+print(f"recall score: {recall_score(y_test,y_pred,average= None)}")
 
 # Save the trained model
 model.save("cloud_burst_model.keras")
