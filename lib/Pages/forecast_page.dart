@@ -9,10 +9,6 @@ import 'package:nimbus_cast/utilities/colors.dart';
 import 'package:nimbus_cast/utilities/consts.dart';
 import 'package:nimbus_cast/utilities/weather_icon.dart';
 import 'package:weather/weather.dart';
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:math';
-import 'package:http/http.dart' as http; // Import the http package
 
 class ForecastPage extends StatefulWidget {
   final String changeCity;
@@ -152,7 +148,7 @@ class _ForecastPageState extends State<ForecastPage> {
                       height: 20,
                     ),
                     Text(
-                      cityName ?? "",
+                      cityName,
                       style: Theme.of(context)
                           .textTheme
                           .displaySmall
@@ -201,7 +197,7 @@ class _ForecastPageState extends State<ForecastPage> {
                                     children: [
                                       Text(
                                         snapshot.hasData
-                                            ? '${(snapshot.data!*100).toStringAsFixed(3)}%'
+                                            ? '${(snapshot.data!*100).toStringAsExponential(2)}%'
                                             : 'N/A',
                                         style: Theme.of(context)
                                             .textTheme

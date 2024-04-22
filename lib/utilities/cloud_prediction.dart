@@ -14,6 +14,7 @@ Future<double> fetchDataFromAPI(int temperature, int feelsLike, double humidity,
   const url =
       'http://10.0.2.2:5000/predict'; // Update with your Flask server URL
   final headers = {'Content-Type': 'application/json'};
+  print(visibility);
   final body = jsonEncode({
     // Add your request data here
     "Temperature (C)": temperature,
@@ -30,8 +31,8 @@ Future<double> fetchDataFromAPI(int temperature, int feelsLike, double humidity,
 
   if (response.statusCode == 200) {
     final data = await jsonDecode(response.body);
-    var cloudBurstProbability = data['Cloud Burst Probability'];
-    print((cloudBurstProbability*100).toStringAsFixed(7));
+    double cloudBurstProbability = data['Cloud Burst Probability'];
+    print("Cloud Burst Probability: ${cloudBurstProbability.toStringAsExponential(2)}");
     return (cloudBurstProbability);
   } else {
     return (0.1);

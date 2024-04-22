@@ -309,7 +309,7 @@ class _SimulationPageState extends State<SimulationPage> {
                                   height: 20,
                                 ),
                                 Text(
-                                  "${(result!*100).toStringAsFixed(3)}%",
+                                  "${(result!*100).toStringAsExponential(2)}%",
                                   style: Theme.of(context)
 
                                       .textTheme
